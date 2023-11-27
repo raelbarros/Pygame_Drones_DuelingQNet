@@ -70,7 +70,7 @@ class DroneIA:
 
 
     def _destination(self):
-        # Define um novo destino aleatório para o drone
+        # Define um novo destino aleatorio para o drone
         x = random.randint(0, (self.display.w-BLOCK_SIZE )//BLOCK_SIZE)*BLOCK_SIZE
         y = random.randint(0, (self.display.h-BLOCK_SIZE )//BLOCK_SIZE)*BLOCK_SIZE
         self.dest = Point(x, y)
@@ -113,8 +113,8 @@ class DroneIA:
 
     def is_collision(self, point, list_drones, get_state=False):
         '''
-        Verifica se há colisão entre o drone atual e outros drones.
-        Retorna True se houver colisão, False caso contrário.
+        Verifica se ha colisao entre o drone atual e outros drones.
+        Retorna True se houver colisao, False caso contrario.
         '''
         if point is None:
             point = self.drone
@@ -122,7 +122,7 @@ class DroneIA:
         # Verica se e so a checagem de estado ou se realmente e um movimento valido
         if get_state:
             # Detecta colisao com as bordas
-            # Dentro do método is_collision
+            # Dentro do metodo is_collision
             if point.x < 0 or point.x > self.display.w-BLOCK_SIZE  or point.y < 0 or point.y > self.display.h-BLOCK_SIZE:
                 return True
             
@@ -130,7 +130,7 @@ class DroneIA:
             for other_drone in list_drones:
                 other_drone = other_drone.drone
                 if other_drone != self.drone and math.dist(self.drone, other_drone) <= BLOCK_SIZE * 3:
-                    return True  # Há uma colisão
+                    return True  # Ha uma colisao
                 
         elif not get_state:
             # Detecta colisao com as bordas
@@ -143,12 +143,12 @@ class DroneIA:
                 if aux_drone != self.drone and math.dist(self.drone, aux_drone) <= BLOCK_SIZE:
                     self.collision +=1
                     self.plot_point_collision.append(self.drone)
-                    return True  # Há uma colisão
+                    return True  # Ha uma colisao
                 
-        return False  # Não há colisão
+        return False  # Nao ha colisao
 
 
-    # Adicione o seguinte método para verificar e evitar colisões:
+    # Adicione o seguinte metodo para verificar e evitar colisoes:
     def _find_safe_direction(self, list_drones):
         safe_directions = []
 
@@ -157,29 +157,29 @@ class DroneIA:
             if not any(drone.is_collision(next_point, list_drones, True) for drone in list_drones if drone != self):
                 safe_directions.append(direction)
 
-        # Se nenhuma direção é segura, retorna a direção atual (sem movimento)
+        # Se nenhuma direcao e segura, retorna a direcao atual (sem movimento)
         return safe_directions[0] if safe_directions else self.direction
 
 
     def _move(self, action, list_drones):
-        # Atualiza a direção e a posição do drone com base na ação escolhida
+        # Atualiza a direcao e a posicao do drone com base na acao escolhida
 
         clock_wise = [Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP]
         idx = clock_wise.index(self.direction)
 
         if np.array_equal(action, [1, 0, 0]):
-            new_dir = clock_wise[idx]  # Sem mudança na direção
+            new_dir = clock_wise[idx]  # Sem mudanca na direcao
         elif np.array_equal(action, [0, 1, 0]):
             next_idx = (idx + 1) % 4
-            new_dir = clock_wise[next_idx]  # Virar para direita (direção: direita -> baixo -> esquerda -> cima)
+            new_dir = clock_wise[next_idx]  # Virar para direita (direcao: direita -> baixo -> esquerda -> cima)
         else:
             next_idx = (idx - 1) % 4
-            new_dir = clock_wise[next_idx]  # Virar para esquerda (direção: direita -> cima -> esquerda -> baixo)
+            new_dir = clock_wise[next_idx]  # Virar para esquerda (direcao: direita -> cima -> esquerda -> baixo)
 
-        # Obtém a próxima posição após a rotação
+        # Obtem a proxima posicao apos a rotacao
         next_point = self._get_next_position(new_dir)
 
-        # Evitar colisões
+        # Evitar colisoes
         if self.is_collision(next_point, list_drones, True):
             safe_direction = self._find_safe_direction(list_drones)
             next_point_safe = self._get_next_position(safe_direction)
@@ -190,11 +190,11 @@ class DroneIA:
             self.drone = next_point
 
 
-    # Modifica a função _get_next_position para garantir que o drone permaneça próximo à sua posição atual:
+    # Modifica a funcao _get_next_position para garantir que o drone permaneca proximo a sua posicao atual:
     def _get_next_position(self, direction):
         x, y = self.drone.x, self.drone.y
 
-        # Ajusta a próxima posição para garantir que o drone não se mova muito longe
+        # Ajusta a proxima posicao para garantir que o drone nao se mova muito longe
         if direction == Direction.RIGHT:
             x += BLOCK_SIZE
         elif direction == Direction.LEFT:
@@ -209,11 +209,11 @@ class DroneIA:
 
     def get_state(self, list_drones):
         '''
-        Obtém o estado atual com base na posição do drone e possíveis colisões com outros drones em diferentes direções.
+        Obtem o estado atual com base na posicao do drone e possíveis colisoes com outros drones em diferentes direcoes.
         Retorna um vetor de estado codificado.
-        O estado consiste em informações sobre possíveis colisões à frente, à direita e à esquerda,
-        direção de movimento do drone, localização do destino em relação ao drone.
-        Cada elemento do vetor é binário, indicando a presença ou ausência de uma condição.
+        O estado consiste em informacoes sobre possíveis colisoes a frente, a direita e a esquerda,
+        direcao de movimento do drone, localizacao do destino em relacao ao drone.
+        Cada elemento do vetor e binario, indicando a presenca ou ausência de uma condicao.
         '''
 
         point_l = self._get_next_position(Direction.LEFT)
@@ -228,17 +228,17 @@ class DroneIA:
             (self.is_collision(point_u, list_drones, True)),  # cima
             (self.is_collision(point_d, list_drones, True)),  # baixo
             
-            # direção do movimento
+            # direcao do movimento
             self.direction == Direction.LEFT,
             self.direction == Direction.RIGHT,
             self.direction == Direction.UP,
             self.direction == Direction.DOWN,
             
-            # localização do destino 
-            self.dest.x < self.drone.x,  # dest left
-            self.dest.x > self.drone.x,  # dest right
-            self.dest.y < self.drone.y,  # dest up
-            self.dest.y > self.drone.y  # dest down
+            # localizacao do destino 
+            self.dest.x < self.drone.x,  # dest esquerda
+            self.dest.x > self.drone.x,  # dest dureita
+            self.dest.y < self.drone.y,  # dest cima
+            self.dest.y > self.drone.y  # dest baixo
         ]
 
         return np.array(state, dtype=int)
@@ -264,7 +264,7 @@ class DroneIA:
 
 
     def train_short_memory(self, state, action, reward, next_state, done):
-        # Treina o modelo com uma única experiência.
+        # Treina o modelo com uma unica experiência.
         self.trainer.train_step(state, action, reward, next_state, done)
 
     def get_action(self, state):
@@ -300,15 +300,15 @@ class DroneIA:
             rewards, dones, scores = zip(*[drone.play_step(final_move, list_drones) for drone, final_move in zip(list_drones, final_moves)])
             states_new = [drone.get_state(list_drones) for drone in list_drones]
 
-            # Treina a memória de curto prazo para cada agente
+            # Treina a memoria de curto prazo para cada agente
             for i, drone in enumerate(list_drones):
                 drone.train_short_memory(states_old[i], final_moves[i], rewards[i], states_new[i], dones[i])
 
-            # Armazena a experiência na memória de longo prazo para cada agente
+            # Armazena a experiência na memoria de longo prazo para cada agente
             for i, drone in enumerate(list_drones):
                 drone.remember(states_old[i], final_moves[i], rewards[i], states_new[i], dones[i])
 
-            # Treina a memória de longo prazo para cada agente e plota os resultados
+            # Treina a memoria de longo prazo para cada agente e plota os resultados
             for i, drone in enumerate(list_drones):
                 if dones[i]:
                     drone.n_games += 1
@@ -318,7 +318,7 @@ class DroneIA:
                         drone.record = drone.score
                         drone.model.save()
 
-                    print(f'Drone {drone.drone_id}, Jogo {drone.n_games}, Pontuação {drone.score}, Recorde: {drone.record}')
+                    print(f'Drone {drone.drone_id}, Jogo {drone.n_games}, Pontuacao {drone.score}, Recorde: {drone.record}')
 
                     # Atualiza as listas para plotagem
                     plot_collision.append(self.collision)
@@ -336,9 +336,9 @@ class DroneIA:
 
 if __name__ == '__main__':
 
-    display = Display(block_size=BLOCK_SIZE)  # Cria uma única instância do ambiente de exibição
+    display = Display(block_size=BLOCK_SIZE)  # Cria uma unica instância do ambiente de exibicao
 
-    num_drones = int(sys.argv[1]) if len(sys.argv) > 1 else NUM_DRONES  # Obtém o número de drones da linha de comando ou usa 1 por padrão
+    num_drones = int(sys.argv[1]) if len(sys.argv) > 1 else NUM_DRONES  # Obtem o numero de drones da linha de comando ou usa 1 por padrao
     drones = [DroneIA(id=i+1, display=display) for i in range(num_drones)]  # Lista de drones
     # display.update(drones)
 
