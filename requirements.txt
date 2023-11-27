@@ -1,0 +1,8 @@
+pygame
+pyswarm
+ipython
+numpy
+matplotlib
+torch
+flwr
+pandas
