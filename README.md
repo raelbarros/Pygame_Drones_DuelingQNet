@@ -30,6 +30,7 @@ Execute o arquivo `drone.py` para iniciar a simulação dos drones. Isso abrirá
 - `model.py`: Implementa a arquitetura da Rede Neural do tipo Dueling Q-Network.
 - `model_old.py`: Implementa a arquitetura da Rede Neural do tipo Linear Q-Network.
 - `/model`: Contem um modelo já treinado previamente.
+- `report.ipynb`: Notebook usado para analise de dados.
 
 
 ---
