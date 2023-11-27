@@ -29,6 +29,7 @@ Execute o arquivo `drone.py` para iniciar a simulação dos drones. Isso abrirá
 - `helper.py`: Plota graficos com as metricas da simulação.
 - `model.py`: Implementa a arquitetura da Rede Neural do tipo Dueling Q-Network.
 - `model_old.py`: Implementa a arquitetura da Rede Neural do tipo Linear Q-Network.
+- `/model`: Contem um modelo já treinado previamente.
 
 
 ---
@@ -44,7 +45,7 @@ Execute o arquivo `drone.py` para iniciar a simulação dos drones. Isso abrirá
 
 **Resultados e Aprendizados:**
 
-- Os resultados do treinamento, incluindo gráficos e métricas, podem ser encontrados na pasta `data` durante a execução de cada rodada do jogo.
+- Os resultados do treinamento, incluindo gráficos e métricas e modelo, podem ser encontrados na pasta `data` durante a execução do jogo.
 
 
 ---
